@@ -1,7 +1,8 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
 export "FLUTTER_ROOT=/opt/flutter"
-export "FLUTTER_APPLICATION_PATH=/mnt/data/sources/flutter/plugins/flutter_launch_whatsapp/example"
+export "FLUTTER_APPLICATION_PATH=/mnt/storage/sources/flutter/plugins/flutter_launch_whatsapp/example"
+export "FLUTTER_FRAMEWORK_SWIFT_PACKAGE_PATH=/mnt/storage/sources/flutter/plugins/flutter_launch_whatsapp/example/ios/Flutter/ephemeral/Packages/.packages/FlutterFramework"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_TARGET=lib/main.dart"
 export "FLUTTER_BUILD_DIR=build"

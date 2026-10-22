@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
           title: new Text('Plugin example app'),
         ),
         body: Center(
-          child: FlatButton(
+          child: TextButton(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
