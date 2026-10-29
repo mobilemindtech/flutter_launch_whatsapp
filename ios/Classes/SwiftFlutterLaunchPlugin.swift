@@ -11,23 +11,33 @@ public class SwiftFlutterLaunchPlugin: NSObject, FlutterPlugin {
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
 
     if ("launchWathsApp" == call.method) {
-      let args = call.arguments as! Dictionary<String, String>
-      let phone = args["phone"]
-      let message = args["message"]
+      let args = call.arguments as? [String: Any]
+      let phone = args?["phone"] as? String
+      let message = args?["message"] as? String
 
-      let urlString = "whatsapp://send?phone=\(phone ?? "0")&message=\(message ?? "0")"
+      var components = URLComponents()
+      components.scheme = "whatsapp"
+      components.host = "send"
+      components.queryItems = [
+        URLQueryItem(name: "phone", value: phone ?? ""),
+        URLQueryItem(name: "text", value: message ?? "")
+      ]
 
-      let urlStringEncoded = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-      let URL = NSURL(string: urlStringEncoded!)
-
-      if UIApplication.shared.canOpenURL(URL! as URL) {
-        UIApplication.shared.openURL(URL! as URL)
+      guard let url = components.url else {
+        result(false)
+        return
       }
+
+      // openURL(_:) foi descontinuado e no iOS 18+ não abre mais nada (retorna false silenciosamente)
+      UIApplication.shared.open(url, options: [:]) { success in
+        result(success)
+      }
+      return
     }
 
     if ("hasApp" == call.method) {
-      let args = call.arguments as! Dictionary<String, String>
-      let name = args["name"]
+      let args = call.arguments as? [String: Any]
+      let name = args?["name"] as? String
 
        switch name ?? "0" {
          case "whatsapp":
@@ -37,7 +47,10 @@ public class SwiftFlutterLaunchPlugin: NSObject, FlutterPlugin {
              result(false)
          break
        }
+      return
     }
+
+    result(FlutterMethodNotImplemented)
   }
 
   public func schemeAvailable(scheme: String) -> Bool {

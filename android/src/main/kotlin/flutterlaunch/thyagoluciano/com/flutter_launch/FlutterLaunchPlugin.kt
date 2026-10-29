@@ -64,8 +64,12 @@ class FlutterLaunchPlugin: MethodCallHandler, FlutterPlugin, ActivityAware {
 
           if (intent.resolveActivity(pm) != null) {
             this.activity!!.startActivity(intent)
+            result.success(true)
+            return
           }
         }
+        result.success(false)
+        return
       }
 
       if (call.method.equals("hasApp")) {
@@ -78,7 +82,10 @@ class FlutterLaunchPlugin: MethodCallHandler, FlutterPlugin, ActivityAware {
             result.error("App not found", "", null)
           }
         }
+        return
       }
+
+      result.notImplemented()
     } catch (e: PackageManager.NameNotFoundException) {
       result.error("Name not found", e.message, null)
     }
@@ -114,11 +121,11 @@ class FlutterLaunchPlugin: MethodCallHandler, FlutterPlugin, ActivityAware {
   }
 
   override fun onDetachedFromActivityForConfigChanges() {
-    TODO("Not yet implemented")
+    onDetachedFromActivity()
   }
 
-  override fun onReattachedToActivityForConfigChanges(p0: ActivityPluginBinding) {
-    TODO("Not yet implemented")
+  override fun onReattachedToActivityForConfigChanges(activityPluginBinding: ActivityPluginBinding) {
+    onAttachedToActivity(activityPluginBinding)
   }
 
   override fun onDetachedFromActivity() {
